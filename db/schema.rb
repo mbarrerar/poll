@@ -11,26 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_141_004_134_727) do
-  create_table 'options', force: true do |t|
-    t.string 'title'
-    t.integer 'question_id'
-    t.datetime 'created_at'
-    t.datetime 'updated_at'
+ActiveRecord::Schema.define(version: 20151014184947) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "options", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table 'questions', force: true do |t|
-    t.string 'title'
-    t.string 'secret'
-    t.datetime 'created_at'
-    t.datetime 'updated_at'
+  create_table "questions", force: :cascade do |t|
+    t.string   "title"
+    t.string   "secret"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table 'votes', force: true do |t|
-    t.string 'secret'
-    t.integer 'question_id'
-    t.integer 'option_id'
-    t.datetime 'created_at'
-    t.datetime 'updated_at'
+  add_index "questions", ["secret"], name: "index_questions_on_secret", using: :btree
+
+  create_table "votes", force: :cascade do |t|
+    t.string   "secret"
+    t.integer  "question_id"
+    t.integer  "option_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "votes", ["option_id"], name: "index_votes_on_option_id", using: :btree
+  add_index "votes", ["question_id"], name: "index_votes_on_question_id", using: :btree
+
 end
