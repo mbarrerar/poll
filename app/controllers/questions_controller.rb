@@ -13,12 +13,9 @@ class QuestionsController < ApplicationController
     @question.save!
 
     params[:options].each do |option|
-      if option[:title] != ''
-        new_option = Option.new
-        new_option.title = option[:title]
-        new_option.question_id = @question.id
-        new_option.save!
-      end
+      next unless option[:title] != ''
+      new_option = Option.new(title: option[:title], question_id: @question.id)
+      new_option.save!
     end
 
     redirect_to "/#{@question.secret}"
@@ -40,7 +37,7 @@ class QuestionsController < ApplicationController
   private
 
   def set_question
-    @question = Question.where(secret: params[:secret]).first
+    @question = Question.find_by_secret!(params[:secret])
   end
 
   def question_params
@@ -48,11 +45,9 @@ class QuestionsController < ApplicationController
   end
 
   def check_secret_is_unique
-    if defined? params[:question][:secret]
-      if Question.where({ secret: params[:question][:secret] }).exists?
-        @question = Question.new(question_params)
-        redirect_to :back, notice: 'Sorry that URL is taken'
-      end
-    end
+    return unless defined? params[:question][:secret]
+    return unless Question.where(secret: params[:question][:secret]).exists?
+    @question = Question.new(question_params)
+    redirect_to :back, notice: 'Sorry that URL is taken'
   end
 end
