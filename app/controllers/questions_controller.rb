@@ -1,5 +1,4 @@
 class QuestionsController < ApplicationController
-
   before_filter :set_question, only: [:show, :results]
   before_filter :check_secret_is_unique, only: [:create]
 
@@ -14,7 +13,7 @@ class QuestionsController < ApplicationController
     @question.save!
 
     params[:options].each do |option|
-      if option[:title] != ""
+      if option[:title] != ''
         new_option = Option.new
         new_option.title = option[:title]
         new_option.question_id = @question.id
@@ -27,7 +26,7 @@ class QuestionsController < ApplicationController
 
   def show
     vote_id = cookies["vote_#{@question.secret}"]
-    @vote = Vote.where({secret: vote_id}).first_or_initialize
+    @vote = Vote.where(secret: vote_id).first_or_initialize
   end
 
   def results
@@ -35,13 +34,13 @@ class QuestionsController < ApplicationController
   end
 
   def check_secret_availability
-    render json: { available: !Question.where({secret: params[:secret]}).exists? }
+    render json: { available: !Question.where(secret: params[:secret]).exists? }
   end
 
   private
 
   def set_question
-    @question = Question.where({secret: params[:secret]}).first
+    @question = Question.where(secret: params[:secret]).first
   end
 
   def question_params
@@ -50,11 +49,10 @@ class QuestionsController < ApplicationController
 
   def check_secret_is_unique
     if defined? params[:question][:secret]
-      if Question.where({secret: params[:question][:secret]}).exists?
+      if Question.where({ secret: params[:question][:secret] }).exists?
         @question = Question.new(question_params)
         redirect_to :back, notice: 'Sorry that URL is taken'
       end
     end
   end
-
 end

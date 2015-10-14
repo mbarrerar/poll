@@ -3,6 +3,6 @@ class Option < ActiveRecord::Base
   belongs_to :question
 
   def votes
-    Vote.where({ option_id: self.id }).count
+    Vote.where(option_id: id).count
   end
 end

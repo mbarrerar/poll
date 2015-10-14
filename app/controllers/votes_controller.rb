@@ -4,14 +4,14 @@ class VotesController < ApplicationController
   def update
     question_id = params[:vote][:question_id]
     vote_id = cookies["vote_#{question_id}"]
-    vote = Vote.where({secret: vote_id}).first_or_initialize
+    vote = Vote.where(secret: vote_id).first_or_initialize
 
-    question = Question.where({secret: question_id}).first
+    question = Question.where(secret: question_id).first
     vote.secret = SecureRandom.urlsafe_base64(nil, false) unless vote.secret
     vote.question_id = question.id unless vote.question_id
     vote.option_id = Option.find(params[:vote][:option_id]).id
 
-    Pusher[question_id].trigger("vote", {})
+    Pusher[question_id].trigger('vote', {})
 
     if vote.save!
       cookies.permanent["vote_#{question.secret}"] = vote.secret
@@ -29,7 +29,7 @@ class VotesController < ApplicationController
   private
 
   def set_question
-    @question = Question.where({secret: params[:secret]}).first
+    @question = Question.where(secret: params[:secret]).first
   end
 
   def question_params

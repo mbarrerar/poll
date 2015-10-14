@@ -11,28 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141004134727) do
-
-  create_table "options", force: true do |t|
-    t.string   "title"
-    t.integer  "question_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+ActiveRecord::Schema.define(version: 20_141_004_134_727) do
+  create_table 'options', force: true do |t|
+    t.string 'title'
+    t.integer 'question_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "questions", force: true do |t|
-    t.string   "title"
-    t.string   "secret"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'questions', force: true do |t|
+    t.string 'title'
+    t.string 'secret'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "votes", force: true do |t|
-    t.string   "secret"
-    t.integer  "question_id"
-    t.integer  "option_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'votes', force: true do |t|
+    t.string 'secret'
+    t.integer 'question_id'
+    t.integer 'option_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
-
 end

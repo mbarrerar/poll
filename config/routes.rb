@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   resources :questions
   get '/admin' => 'admin#dashboard'
   put '/votes' => 'votes#update'
